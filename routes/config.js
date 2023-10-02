@@ -1,11 +1,10 @@
+import { envs } from "../config/envs.js";
+
 const config = {
-    "user": "postgres", //env var: PGUSER
-    "database": "job_match_db", //env var: PGDATABASE
-    "password": "admin", //env var: PGPASSWORD
-    "host": "localhost", // Server hosting the postgres database
-    "port": 5432, //env var: PGPORT
-    "max": 10, // max number of clients in the pool
-    "idleTimeoutMillis": 30000, // how long a client is allowed to remain idle before being closed
+    "user": envs.POSTGRES_USER, //env var: PGUSER
+    "database": envs.POSTGRES_DB, //env var: PGDATABASE
+    "password": envs.POSTGRES_PASSWORD, //env var: PGPASSWORD
+    "port": envs.DB_PORT //env var: PGPORT
 };
   
 export default config;
