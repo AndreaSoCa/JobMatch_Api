@@ -10,7 +10,7 @@ export const addWorker = (req,res) => {
     if (err) {
       return console.error('error fetching from pool on worker', err);
     }
-
+    console.log(req.body)
     const sql = `INSERT INTO worker(
       email,
       password,
@@ -29,12 +29,12 @@ export const addWorker = (req,res) => {
       '${req.body.phone_number}',
       '${req.body.worker_name}',
       '${req.body.worker_last_name}',
-      '${req.body.profile_image}',
-      '${req.body.identification_image}',
+      '',
+      '',
       '${req.body.worker_address}',
-      '${req.body.stars}',
-      '${req.body.available}',
-      '${req.body.is_active}'
+      ${0},
+      'true',
+      'true'
     );`;
     
     client.query(sql, (err, result) => {

@@ -1,7 +1,7 @@
 CREATE TABLE user_table(
   user_id serial PRIMARY KEY,
   email varchar(100) unique not null ,
-  "password" varchar(100) unique not null,
+  "password" varchar(100) not null,
   phone_number varchar(50) unique not null,
   user_name varchar(50),
   user_last_name varchar(50),
@@ -12,7 +12,7 @@ CREATE TABLE user_table(
 CREATE TABLE worker(
   worker_id serial PRIMARY KEY, 
   email varchar(100) unique not null ,
-  "password" varchar(100) unique not null,
+  "password" varchar(100) not null,
   phone_number varchar(50) unique not null,
   worker_name varchar(50), 
   worker_last_name varchar(50), 

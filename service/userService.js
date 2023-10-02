@@ -11,9 +11,9 @@ export const addUser = (req,res) => {
       return console.error('error fetching from pool on user', err);
     }
 
-    const sql = `INSERT INTO user_table(email, phone_number, user_name, user_last_name, 
+    const sql = `INSERT INTO user_table(email, phone_number, password, user_name, user_last_name, 
       user_address, is_active) VALUES ('${req.body.email}', 
-      '${req.body.phone_number}', '${req.body.user_name}', '${req.body.user_last_name}', 
+      '${req.body.phone_number}', '${req.body.password}', '${req.body.user_name}', '${req.body.user_last_name}', 
       '${req.body.address}', 'true');`;
     
     client.query(sql, (err, result) => {
