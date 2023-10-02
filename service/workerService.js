@@ -13,6 +13,7 @@ export const addWorker = (req,res) => {
 
     const sql = `INSERT INTO worker(
       email,
+      password,
       phone_number,
       worker_name,
       worker_last_name,
@@ -24,6 +25,7 @@ export const addWorker = (req,res) => {
       is_active
     ) VALUES (
       '${req.body.email}',
+      '${req.body.password}',
       '${req.body.phone_number}',
       '${req.body.worker_name}',
       '${req.body.worker_last_name}',
@@ -39,7 +41,7 @@ export const addWorker = (req,res) => {
       done(err);
       if (err) {
         res.status(400).json({message: 'Server error'});
-        return console.error('error running INSERT query on user', err);
+        return console.error('error running INSERT query on worker', err);
       }
       res.status(200).json(result.rows);
     });
@@ -51,7 +53,7 @@ export const addWorker = (req,res) => {
  * @param {*} req 
  * @param {*} res 
  */
-export const getUsers = (req, res) => {
+export const getWorkers = (req, res) => {
   connect(function (err, client, done) {
     if (err) {
       return console.error('error fetching from pool on worker', err);
