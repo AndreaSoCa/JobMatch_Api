@@ -10,9 +10,8 @@ pool.on('error', (err, client) => {
     console.error('idle client error', err.message, err.stack)
 })
 
-const query = (text, values, callback) => {
-    console.log('query:', text, values);
-    return pool.query(text, values, callback);
+export const query = (text, values) => {
+    return pool.query(text, values);
 };
 
 const connect = (callback) => {

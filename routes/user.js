@@ -1,5 +1,5 @@
 import express from 'express';
-import {addUser} from "../service/userService.js";
+import {addUser, getUsers} from "../service/userService.js";
 import multer from 'multer';
 
 const storage = multer.diskStorage({
@@ -15,8 +15,15 @@ const upload = multer({storage: storage});
 /**
  * Añade un nuevo usuario
  */
-router.post('/add', upload.single('public_services'), (req, res, next) => {
+router.post('/add', (req, res, next) => {
   addUser(req,res);
+})
+
+/**
+ * Añade un nuevo usuario
+ */
+router.get('/all', (req, res) => {
+  getUsers(req,res);
 })
 
 export default router;
