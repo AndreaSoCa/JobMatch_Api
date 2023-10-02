@@ -17,6 +17,9 @@ app.use(bodyParser.json());
 app.use('/',mainRouter);
 app.use('/mande/user', userRouter);
 
+// WORKER
+app.use('/mande/worker', userRouter);
+
 app.get('/job-match', (req, res) => {
     res.send("API response");
 })
