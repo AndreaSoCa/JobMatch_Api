@@ -90,12 +90,12 @@ export const loginWorker = (req, res) => {
     client.query(sql, async (err, result) => {
       done(err);
       if (err || result.rows.length === 0) {
-        res.json({message: 'invalid worker email or password.'}).status(401);
+        res.status(400).json({message: 'invalid worker email or password.'});
         return console.error('error running SELECT query on worker', err);
       }
       const worker = result.rows[0]
       if (await compare(req.body.password, worker.password)) {
-        res.json({
+        res.status(200).json({
           worker: {
             email: worker.email,
             phone_number: worker.phone_number,
@@ -104,10 +104,10 @@ export const loginWorker = (req, res) => {
             address: worker.address
           },
           token: jwt.sign({ id: worker.worker_id }, envs.JWT_SEED)
-        }).status(200);
+        });
         return;
       }
-      res.json({message: 'invalid worker email or password.'}).status(401)
+      res.status(400).json({message: 'invalid worker email or password.'});
     });
   });
 }

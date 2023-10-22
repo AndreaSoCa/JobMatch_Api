@@ -26,7 +26,7 @@ export const addUser = (req,res) => {
       if (err) {
         return console.error('error running INSERT query on user', err);
       }
-      res.send(JSON.stringify(result.rows));
+      res.json(JSON.stringify(result.rows));
     });
   });
 }
@@ -70,12 +70,12 @@ export const loginUsers = (req, res) => {
     client.query(sql, async (err, result) => {
       done(err);
       if (err || result.rows.length === 0) {
-        res.json({message: 'invalid user email or password.'}).status(401);
+        res.status(400).json({message: 'invalid user email or password.'});
         return console.error('error running SELECT query on user', err);
       }
       const user = result.rows[0]
       if (await compare(req.body.password, user.password)) {
-        res.json({
+        res.status(200).json({
           user: {
             email: user.email,
             phone_number: user.phone_number,
@@ -87,7 +87,7 @@ export const loginUsers = (req, res) => {
         }).status(200);
         return;
       }
-      res.json({message: 'invalid user email or password.'}).status(401)
+      res.status(400).json({message: 'invalid user email or password.'});
     });
   });
 }
