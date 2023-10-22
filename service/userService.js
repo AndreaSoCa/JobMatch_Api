@@ -84,7 +84,7 @@ export const loginUsers = (req, res) => {
             address: user.address
           },
           token: jwt.sign({ id: user.user_id }, envs.JWT_SEED)
-        }).status(200);
+        });
         return;
       }
       res.status(400).json({message: 'invalid user email or password.'});
