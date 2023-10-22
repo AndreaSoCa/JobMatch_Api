@@ -1,6 +1,5 @@
 import express from 'express';
-import {addUser, getUsers} from "../service/userService.js";
-import { addWorker, getWorkers } from '../service/workerService.js';
+import { addWorker, getWorkers, loginWorker } from '../service/workerService.js';
 import multer from 'multer';
 
 const router = express.Router();
@@ -19,7 +18,6 @@ const upload = multer({storage: storage});
  * Añade un nuevo trabajador
  */
 router.post('/add', (req, res, next) => {
-  console.log('POSTWORKERRR')
   addWorker(req,res);
 })
 
@@ -28,6 +26,13 @@ router.post('/add', (req, res, next) => {
  */
 router.get('/all', upload.single('profile_image'), (req, res) => {
   getWorkers(req,res);
+})
+
+/**
+ * login de  usuario
+ */
+router.post('/login', (req, res) => {
+  loginWorker(req,res);
 })
 
 export default router;
