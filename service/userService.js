@@ -74,7 +74,6 @@ export const loginUsers = (req, res) => {
         return console.error('error running SELECT query on user', err);
       }
       const user = result.rows[0]
-      console.log({user});
       if (await compare(req.body.password, user.password)) {
         res.json({
           user: {
