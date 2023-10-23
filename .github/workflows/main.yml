@@ -16,6 +16,6 @@ jobs:
       - name: List Directory Contents
         run: ls
       - name: Install dependencies
-        run: npm install --package-lock-only
+        run: npm ci
       - name: Run tests
-        run: npm test
+        run: npm run test
