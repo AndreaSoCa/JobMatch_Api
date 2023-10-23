@@ -1,4 +1,3 @@
-import express from 'express';
 import Pool from 'pg-pool';
 import config from './config.js';
 
