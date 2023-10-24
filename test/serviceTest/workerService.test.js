@@ -57,4 +57,5 @@ describe('We trying the loginWorker function', () => {
       await pool.end();
     }
   });
+  console.log('tuki');
 });
