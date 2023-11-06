@@ -35,4 +35,11 @@ router.post('/login', (req, res) => {
   loginWorker(req,res);
 })
 
+/**
+ * Actualiza un trabajador.
+ */
+router.put('/update', (req, res, next) => {
+  updateWorker(req, res);
+})
+
 export default router;
