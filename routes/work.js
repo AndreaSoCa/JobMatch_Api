@@ -1,5 +1,6 @@
 import express from 'express';
-import { getAllWorks, addWork, updateWork, deleteWork, getWorkNameById } from '../service/workService.js';
+import { getAllWorks, addWork } from '../service/workService.js';
+// import { getAllWorks, addWork, updateWork, deleteWork, getWorkNameById } from '../service/workService.js';
 
 const router = express.Router();
 

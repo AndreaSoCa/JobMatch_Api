@@ -1,3 +1,5 @@
+import connect from "../routes/pool.js";
+
 /**
  * Lista todos los trabajos
  * @param {*} res 

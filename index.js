@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from "body-parser";
 import userRouter from './routes/user.js';
 import workerRouter from './routes/worker.js'
+import workRouter from './routes/work.js'
 import cors from 'cors';
 import mainRouter from './routes/main.js';
 
@@ -20,6 +21,9 @@ app.use('/job-match/user', userRouter);
 
 // WORKER
 app.use('/job-match/worker', workerRouter);
+
+//Work
+app.use('/job-match/work', workRouter);
 
 app.get('/job-match', (req, res) => {
     res.send("API response");
