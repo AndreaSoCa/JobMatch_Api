@@ -132,3 +132,31 @@ export const uploadFile = (req, res) => {
     res.send(req.file);
   })
 }
+
+/**
+ * Actualiza el registro de un trabajador en la base
+ * @param {*} req
+ * @param {*} res 
+ */
+export const updateWorker = (req, res) => {
+  connect((err, client, done) => {
+    if (err) {
+      return console.error('error fetching from pool on worker', err);
+    }
+
+    const sql = `UPDATE worker set worker_name='${req.body.worker_name}', worker_last_name='${req.body.worker_last_name}', 
+      profile_image='${req.body.profile_image}', identification_image='${req.body.identification_image}', address='${req.body.address}', 
+      stars='${req.body.stars}', available='${req.body.available}', is_active='${req.body.is_active}' WHERE email='${req.body.email}' AND 
+      phone_number='${req.body.phone_number}'`;
+
+    client.query(sql, (err, result) => {
+
+      done(err);
+
+      if (err) {
+        return console.error('error running INSERT query on worker', err);
+      }
+      res.send(JSON.stringify(result.rows));
+    });
+  });
+}
