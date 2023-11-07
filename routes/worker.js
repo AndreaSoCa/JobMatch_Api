@@ -1,5 +1,5 @@
 import express from 'express';
-import { addWorker, getWorkers, loginWorker } from '../service/workerService.js';
+import { addWorker, getWorkers, loginWorker, updateWorker } from '../service/workerService.js';
 import multer from 'multer';
 
 const router = express.Router();
