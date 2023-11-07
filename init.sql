@@ -6,6 +6,7 @@ CREATE TABLE user_table(
   user_name varchar(50),
   user_last_name varchar(50),
   user_address varchar(100),
+  profile_image varchar(150),
   is_active boolean
 );
 
@@ -16,7 +17,7 @@ CREATE TABLE worker(
   phone_number varchar(50) unique not null,
   worker_name varchar(50), 
   worker_last_name varchar(50), 
-  profile_image varchar(150), 
+  profile_image varchar(150),
   identification_image varchar(150), 
   worker_address varchar(150), 
   stars integer, 

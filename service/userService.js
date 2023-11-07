@@ -2,6 +2,7 @@ import { compare, hash } from 'bcrypt';
 import jwt from 'jsonwebtoken'
 import connect, { query } from '../routes/pool.js';
 import { envs } from '../config/envs.js'
+import { rename } from 'fs/promises'
 
 /**
  * Añade a un usuario a la base
@@ -89,6 +90,31 @@ export const loginUsers = (req, res) => {
         return;
       }
       res.status(400).json({message: 'invalid user email or password.'});
+    });
+  });
+}
+
+export const uploadImage = async (req, res) => {
+  console.log({ req: req.body.userId })
+  connect(async function (err, client, done) {
+    if (err) {
+      return console.error('error fetching from pool on user', err);
+    }
+    const newFilePath = `./uploads/user/userImage_${req.body.userId}.jpg`
+    await rename('./uploads/user/userImage.jpg', newFilePath)
+
+    const sql = `
+      UPDATE user_table
+      SET profile_image = '${newFilePath}'
+      WHERE user_id='${req.body.userId}';`;
+
+    client.query(sql, async (err, result) => {
+      done(err);
+      if (err) {
+        res.status(400).json({message: 'invalid user id.'});
+        return console.error('error running UPDATE query on user', err);
+      }
+      res.status(200).json({ imgPath: newFilePath });
     });
   });
 }
