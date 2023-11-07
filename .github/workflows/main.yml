@@ -12,6 +12,7 @@ jobs:
       POSTGRES_DB: "job_match_db"
       DB_PORT: "5432"
       PORT: "3000"
+      JWT_SEED: "secretToken"
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
