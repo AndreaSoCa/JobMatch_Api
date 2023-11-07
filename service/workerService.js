@@ -96,12 +96,13 @@ export const loginWorker = (req, res) => {
       const worker = result.rows[0]
       if (await compare(req.body.password, worker.password)) {
         res.status(200).json({
-          worker: {
+          user: {
+            id: worker.worker_id,
             email: worker.email,
             phone_number: worker.phone_number,
-            worker_name: worker.worker_name,
-            worker_last_name: worker.worker_last_name,
-            address: worker.address
+            name: worker.worker_name,
+            last_name: worker.worker_last_name,
+            address: worker.worker_address
           },
           token: jwt.sign({ id: worker.worker_id }, envs.JWT_SEED)
         });
@@ -139,24 +140,47 @@ export const uploadFile = (req, res) => {
  * @param {*} res 
  */
 export const updateWorker = (req, res) => {
-  connect((err, client, done) => {
+  connect(async (err, client, done) => {
     if (err) {
       return console.error('error fetching from pool on worker', err);
     }
 
-    const sql = `UPDATE worker set worker_name='${req.body.worker_name}', worker_last_name='${req.body.worker_last_name}', 
-      profile_image='${req.body.profile_image}', identification_image='${req.body.identification_image}', address='${req.body.address}', 
-      stars='${req.body.stars}', available='${req.body.available}', is_active='${req.body.is_active}' WHERE email='${req.body.email}' AND 
-      phone_number='${req.body.phone_number}'`;
+    const hashPassword = req.body.password ? await hash(req.body.password, 10) : null;
+    
+    let sql = `UPDATE worker set worker_name='${req.body.worker_name}', worker_last_name='${req.body.worker_last_name}', 
+      profile_image='${req.body.profile_image}', worker_address='${req.body.worker_address}',`;
+      
+    if (hashPassword) {
+      sql += `password='${hashPassword}',`;
+    }
+    
+    sql += `identification_image='${req.body.identification_image}' 
+      WHERE email='${req.body.email}' AND 
+      phone_number='${req.body.phone_number}'
+      RETURNING worker_id, email, phone_number, worker_name, worker_last_name, profile_image, identification_image, worker_address;`;
 
-    client.query(sql, (err, result) => {
+    client.query(sql, async (err, result) => {
 
       done(err);
 
       if (err) {
         return console.error('error running INSERT query on worker', err);
       }
-      res.send(JSON.stringify(result.rows));
+
+      try {
+        const worker = result.rows[0]
+          res.status(200).json({
+            id: worker.worker_id,
+            email: worker.email,
+            phone_number: worker.phone_number,
+            name: worker.worker_name,
+            last_name: worker.worker_last_name,
+            address: worker.worker_address
+          });
+          return;
+      } catch (e) {
+        res.status(400).json({message: 'invalid user email or password.'});
+      }
     });
   });
 }

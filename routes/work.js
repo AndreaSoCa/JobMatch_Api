@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllWorks, addWork, getWorkById } from '../service/workService.js';
+import { getAllWorks, addWork, getWorkById, updateWork } from '../service/workService.js';
 // import { getAllWorks, addWork, updateWork, deleteWork, getWorkNameById } from '../service/workService.js';
 
 const router = express.Router();
@@ -25,6 +25,13 @@ router.post('/add', (req, res) => {
  */
 router.get('/:id', (req, res) => {
   getWorkById(req, res);
+})
+
+/**
+ * Actualiza un trabajo
+ */
+router.put('/update', (req, res) => {
+  updateWork(req, res);
 })
 
 export default router;

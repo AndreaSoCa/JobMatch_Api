@@ -5,6 +5,7 @@ import workerRouter from './routes/worker.js'
 import workRouter from './routes/work.js'
 import cors from 'cors';
 import mainRouter from './routes/main.js';
+import jobOfferedRouter from './routes/jobOffered.js';
 
 const port = 3000;
 
@@ -24,6 +25,9 @@ app.use('/job-match/worker', workerRouter);
 
 //Work
 app.use('/job-match/work', workRouter);
+
+//Job offered
+app.use("/job-match/jobs", jobOfferedRouter);
 
 app.get('/job-match', (req, res) => {
     res.send("API response");

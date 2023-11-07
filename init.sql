@@ -36,6 +36,7 @@ CREATE TABLE job_offered(
   worker_email varchar(100) not null,
   worker_phone_number varchar(50) not null,
   signed boolean,
+  is_active boolean,
   cost_per_service integer,
   work_id integer not null,
   FOREIGN KEY(worker_email) REFERENCES worker(email),
