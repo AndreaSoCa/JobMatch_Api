@@ -77,10 +77,11 @@ export const loginUsers = (req, res) => {
       if (await compare(req.body.password, user.password)) {
         res.status(200).json({
           user: {
+            id: user.user_id,
             email: user.email,
             phone_number: user.phone_number,
-            user_name: user.user_name,
-            user_last_name: user.user_last_name,
+            name: user.user_name,
+            last_name: user.user_last_name,
             address: user.address
           },
           token: jwt.sign({ id: user.user_id }, envs.JWT_SEED)
