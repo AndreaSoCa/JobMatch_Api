@@ -11,6 +11,7 @@ jobs:
       POSTGRES_PASSWORD: "admin"
       POSTGRES_DB: "job_match_db"
       DB_PORT: "5432"
+      PORT: "3000"
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
