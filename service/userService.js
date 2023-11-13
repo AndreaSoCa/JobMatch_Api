@@ -95,7 +95,7 @@ export const loginUsers = (req, res) => {
 }
 
 export const uploadImage = async (req, res) => {
-  console.log({ req: req.body.userId })
+  // console.log({ req: req.body.userId })
   connect(async function (err, client, done) {
     if (err) {
       return console.error('error fetching from pool on user', err);

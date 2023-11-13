@@ -1,17 +1,18 @@
 import express from 'express';
 import { addWorker, getWorkers, loginWorker, updateWorker } from '../service/workerService.js';
-import multer from 'multer';
+import { FileMiddleware } from '../middlewares/file.middleware.js';
 
 const router = express.Router();
 // Multer config
-const storage = multer.diskStorage({
-  destination: './uploads/user/',
-  filename: (req, file, cb) => {
-    cb(null, file.fieldname+'_'+req.body.email+'_'+req.body.phone_number+'.jpg');
-  },
-})
+// const storage = multer.diskStorage({
+//   destination: './uploads/user/',
+//   filename: (req, file, cb) => {
+//     cb(null, file.fieldname+'_'+req.body.email+'_'+req.body.phone_number+'.jpg');
+//   },
+// })
   
-const upload = multer({storage: storage});
+// const upload = multer({storage: storage});
+const multerUpload = new FileMiddleware('workerImage', './uploads/worker')
 
 
 /**
@@ -24,7 +25,8 @@ router.post('/add', (req, res, next) => {
 /**
  * Añade un nuevo usuario
  */
-router.get('/all', upload.single('profile_image'), (req, res) => {
+// router.get('/all', upload.single('profile_image'), (req, res) => {
+router.get('/all', (req, res) => {
   getWorkers(req,res);
 })
 
@@ -40,6 +42,13 @@ router.post('/login', (req, res) => {
  */
 router.put('/update', (req, res, next) => {
   updateWorker(req, res);
+})
+
+/**
+ * Upload image
+ */
+router.post('/upload', multerUpload.manageFile, (req, res) => {
+  uploadImage(req,res);
 })
 
 export default router;

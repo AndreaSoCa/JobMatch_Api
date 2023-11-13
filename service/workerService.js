@@ -184,3 +184,27 @@ export const updateWorker = (req, res) => {
     });
   });
 }
+
+export const uploadImage = async (req, res) => {
+  connect(async function (err, client, done) {
+    if (err) {
+      return console.error('error fetching from pool on worker', err);
+    }
+    const newFilePath = `./uploads/worker/workerImage_${req.body.workerId}.jpg`
+    await rename('./uploads/worker/workerImage.jpg', newFilePath)
+
+    const sql = `
+      UPDATE worker
+      SET profile_image = '${newFilePath}'
+      WHERE worker_id='${req.body.workerId}';`;
+
+    client.query(sql, async (err, result) => {
+      done(err);
+      if (err) {
+        res.status(400).json({message: 'invalid worker id.'});
+        return console.error('error running UPDATE query on worker.', err);
+      }
+      res.status(200).json({ imgPath: newFilePath });
+    });
+  });
+}

@@ -1,1 +1,1 @@
-export * from './file.middleware'
+export * from './file.middleware.js'
