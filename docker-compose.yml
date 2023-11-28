@@ -13,5 +13,16 @@ services:
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
       - postgres-data:/var/lib/postgresql/data
+  job_match_web:
+    container_name: job_match_web
+    build:
+      context: ../JobMatch_Web_Site
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 8000:8000
+    command: npm run dev
+    depends_on:
+      - db
 volumes:
   postgres-data:
