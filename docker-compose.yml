@@ -1,5 +1,6 @@
 version: '3.8'
 services:
+
   db:
     container_name: job_match_db_container
     image: postgres
@@ -13,5 +14,34 @@ services:
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
       - postgres-data:/var/lib/postgresql/data
+
+  job_match_web:
+    container_name: job_match_web
+    build:
+      context: ../JobMatch_Web_Site
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 8000:8000
+    command: npm run dev
+    depends_on:
+      - job_match_api
+
+  job_match_api:
+    container_name: job-Match_api
+    build:
+      context: .
+    ports: 
+      - 3000:3000
+    environment: 
+      - PORT=3000
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=job_match_db
+      - DB_PORT=5432
+      - JWT_SEED=mysecretkey
+    depends_on: 
+      - db
+
 volumes:
   postgres-data:
