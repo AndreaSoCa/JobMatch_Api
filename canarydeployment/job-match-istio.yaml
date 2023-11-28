@@ -1,0 +1,51 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: jobmatchapp-gateway
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: jobmatchapp
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - jobmatchapp-gateway
+  http:
+  - route:
+    - destination:
+        host: jobmatchapp
+        subset: version1
+      weight: 90
+    - destination:
+        host: jobmatchapp
+        subset: version2
+      weight: 10
+  
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: jobmatchapp
+spec:
+  host: jobmatchapp
+  subsets:
+  - name: version1
+    labels:
+      version: "0.0.1"
+  - name: version2
+    labels:
+      version: "0.0.2"

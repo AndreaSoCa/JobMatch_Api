@@ -1,0 +1,150 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jobmatchapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jobmatchapp
+  template:
+    metadata:
+      labels:
+        app: jobmatchapp
+        version: "0.0.1"
+    spec:
+      containers:
+        - name: db
+          image: postgres
+          ports:
+            - containerPort: 5432
+              hostPort: 5432
+              protocol: TCP
+          env:
+            - name: POSTGRES_DB
+              value: job_match_db
+            - name: POSTGRES_PASSWORD
+              value: admin
+            - name: POSTGRES_USER
+              value: postgres
+          volumeMounts:
+            - mountPath: /docker-entrypoint-initdb.d/init.sql
+              name: db-claim0
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-data
+          resources: {}
+        - name: job-match-api
+          image: sxngg/job-match:1.0
+          ports:
+            - containerPort: 3001
+              hostPort: 3001
+              protocol: TCP
+          env:
+            - name: DB_PORT
+              value: "5432"
+            - name: JWT_SEED
+              value: mysecretkey
+            - name: PORT
+              value: "3001"
+            - name: POSTGRES_DB
+              value: job_match_db
+            - name: POSTGRES_PASSWORD
+              value: admin
+            - name: POSTGRES_USER
+              value: postgres
+          resources: {}
+        - name: job-match-web
+          image: sxngg/job-match-front:1.0
+          ports:
+            - containerPort: 8000
+              hostPort: 8000
+              protocol: TCP
+          args:
+            - npm
+            - run
+            - dev
+          resources: {}
+      restartPolicy: Always
+      volumes:
+        - name: db-claim0
+          persistentVolumeClaim:
+            claimName: db-claim0
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: postgres-data
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jobmatchapp-canary
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jobmatchapp
+  template:
+    metadata:
+      labels:
+        app: jobmatchapp
+        version: "0.0.2"
+    spec:
+      containers:
+        - name: db
+          image: postgres
+          ports:
+            - containerPort: 5432
+              hostPort: 5432
+              protocol: TCP
+          env:
+            - name: POSTGRES_DB
+              value: job_match_db
+            - name: POSTGRES_PASSWORD
+              value: admin
+            - name: POSTGRES_USER
+              value: postgres
+          volumeMounts:
+            - mountPath: /docker-entrypoint-initdb.d/init.sql
+              name: db-claim0
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-data
+          resources: {}
+        - name: job-match-api
+          image: fredyball/saludoapp:0.0.2
+          ports:
+            - containerPort: 3001
+              hostPort: 3001
+              protocol: TCP
+          env:
+            - name: DB_PORT
+              value: "5432"
+            - name: JWT_SEED
+              value: mysecretkey
+            - name: PORT
+              value: "3001"
+            - name: POSTGRES_DB
+              value: job_match_db
+            - name: POSTGRES_PASSWORD
+              value: admin
+            - name: POSTGRES_USER
+              value: postgres
+          resources: {}
+        - name: job-match-web
+          image: fredyball/saludoapp:0.0.2
+          ports:
+            - containerPort: 8000
+              hostPort: 8000
+              protocol: TCP
+          args:
+            - npm
+            - run
+            - dev
+          resources: {}
+      restartPolicy: Always
+      volumes:
+        - name: db-claim0
+          persistentVolumeClaim:
+            claimName: db-claim0
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: postgres-data
