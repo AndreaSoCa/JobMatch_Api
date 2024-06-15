@@ -1,7 +1,11 @@
 import express from 'express';
 import bodyParser from "body-parser";
+import userRouter from './routes/user.js';
+import workerRouter from './routes/worker.js'
+import workRouter from './routes/work.js'
 import cors from 'cors';
 import mainRouter from './routes/main.js';
+import jobOfferedRouter from './routes/jobOffered.js';
 
 const port = 3000;
 
@@ -12,8 +16,18 @@ app.use(cors());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-//User End point
+//End points
 app.use('/',mainRouter);
+app.use('/job-match/user', userRouter);
+
+// WORKER
+app.use('/job-match/worker', workerRouter);
+
+//Work
+app.use('/job-match/work', workRouter);
+
+//Job offered
+app.use("/job-match/jobs", jobOfferedRouter);
 
 app.get('/job-match', (req, res) => {
     res.send("API response");
